@@ -1,0 +1,9 @@
+flask
+pdfplumber
+python-docx
+scikit-learn
+spacy
+openai
+
+# Modele francais spaCy (a installer separement) :
+# python -m spacy download fr_core_news_sm

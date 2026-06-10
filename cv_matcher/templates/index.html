@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Matcher</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>CV Matcher</h1>
+        <p class="subtitle">Deposez votre CV pour decouvrir les missions qui vous correspondent le mieux.</p>
+
+        <form method="POST" enctype="multipart/form-data" class="match-form">
+            <label for="cv_file">CV (PDF ou DOCX)</label>
+            <input type="file" id="cv_file" name="cv_file" accept=".pdf,.docx" required>
+
+            <button type="submit">Analyser</button>
+        </form>
+
+        {% if error %}
+        <div class="alert alert-error">{{ error }}</div>
+        {% endif %}
+
+        {% if results %}
+        <div class="result">
+            <h2>Top {{ results|length }} missions correspondantes</h2>
+
+            {% for mission in results %}
+            <div class="mission-card">
+                <div class="mission-header">
+                    <h3>{{ mission.title }}</h3>
+                    <span class="mission-score">{{ mission.score }}%</span>
+                </div>
+                <div class="score-bar">
+                    <div class="score-fill" style="width: {{ mission.score }}%"></div>
+                </div>
+                <p class="mission-description">{{ mission.description }}</p>
+
+                {% if mission.common_keywords %}
+                <ul class="keywords">
+                    {% for keyword in mission.common_keywords %}
+                    <li>{{ keyword }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
